@@ -14,10 +14,18 @@
       shell: yum repolist all
 #      warn: False
 
-    - name: update the server
-      shell: yum update
+#    - name: update the server
+#      shell: yum update
 
-    - name: wait for system to reboot
+    - name: update the package
+      yum:
+        name: '*'
+        state: latest
+
+    - name: reboot the server
+      shell: "sleep 5 && shutdown -r now"
+
+    - name: wait for the system to reboot
       wait_for _connection:
         connect_timeout: 20
         sleep: 5
