@@ -2,16 +2,16 @@
 - name: playbook to ping hosts
   hosts: all
   become: yes
-  
+
   tasks:
     - name: clean up the repos
       shell: yum clean all
-	  
+
     - name: repolist the repos
       shell: yum repolist all
 
     - name: update the server
       shell: yum update
-	  
+
     - name: reboot the hosts
       shell: shutdow -r now
