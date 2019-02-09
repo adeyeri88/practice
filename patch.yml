@@ -18,5 +18,9 @@
       shell: yum update
 #      warn: False
 
-    - name: reboot the hosts
-      shell: shutdow -r now
+    - name: wait for system to reboot
+      wait_for _connection:
+        connect_timeout: 20
+        sleep: 5
+        delay: 5
+        timeout: 300
