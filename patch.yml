@@ -2,7 +2,7 @@
 - name: playbook to ping hosts
   hosts: all
   become: yes
-  become_user: root
+  become_method: root
 
   tasks:
     - name: clean up the repos
