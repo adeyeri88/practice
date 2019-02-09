@@ -16,7 +16,6 @@
 
     - name: update the server
       shell: yum update
-#      warn: False
 
     - name: wait for system to reboot
       wait_for _connection:
