@@ -12,11 +12,11 @@
 
     - name: repolist the repos
       shell: yum repolist all
-      warn: False
+#      warn: False
 
     - name: update the server
       shell: yum update
-      warn: False
+#      warn: False
 
     - name: reboot the hosts
       shell: shutdow -r now
