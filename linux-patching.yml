@@ -5,12 +5,12 @@
   tasks:
   - name: Upgrade all installed packages
     yum:
-    name: '*'
-    state: latest
+      name: '*'
+      state: latest
 
   - name: Reboot after update
     command: /sbin/shutdown -r 1 "Reboot after patching"
-    async: 0
+    async: 1
     poll: 0
     ignore_errors: true
 
