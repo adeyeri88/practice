@@ -27,8 +27,6 @@
       poll: 0
 
     - name: Wait for server to become available
-      wait_for _connection:
-        connect_timeout: 20
-        sleep: 5
-        delay: 50
-        timeout: 300
+      wait_for_connection:
+        delay: 60
+        timeout: 500
