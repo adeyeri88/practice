@@ -1,6 +1,6 @@
 ---
 - name: playbook to ping hosts
-  hosts: all
+  hosts: "{{ survey_host }}"
   
   tasks:
     - name: ping all hosts

@@ -1,6 +1,6 @@
 ---
 - name: Hello World!
-  hosts: all
+  hosts: "{{ survey_host }}"
  
   tasks:
     - name: Hello World!
