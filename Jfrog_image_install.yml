@@ -26,8 +26,8 @@
 
   #  - name: create Artifactory service unit file
   #    file:
-        name: /etc/systemd/system/artifactory.service
-        state: touch
+  #      name: /etc/systemd/system/artifactory.service
+  #      state: touch
 
     - name: deployed artifactory service unit file
       copy:
@@ -40,3 +40,7 @@
         daemon_reload: yes
         name: artifactory
         enabled: yes
+
+    - name: Also check service binding with
+      shell: ss -tunelp | grep 8081
+      
