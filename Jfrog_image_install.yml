@@ -24,7 +24,7 @@
     - name: pass java system properties to the JVM running Artifactory using EXTRA_JAVA_OPTIONS
       shell: docker run --name artifactory -d -p 8081:8081 -v /jfrog/artifactory:/var/opt/jfrog/artifactory -e EXTRA_JAVA_OPTIONS='-Xms512m -Xmx2g -Xss256k -XX:+UseG1GC'
 
-  #  - name: create Artifactory service unit file
+  #  - name: create Artifactory service unit file and because of tangy
   #    file:
   #      name: /etc/systemd/system/artifactory.service
   #      state: touch
