@@ -1,9 +1,9 @@
 ---
-- name: playbook to ping hosts
+- name: playbook to patch linux hosts
   hosts: all
   serial: 1
   become: yes
-  remote_user: root
+#  remote_user: root
 
   tasks:
     - name: clean up the repos
