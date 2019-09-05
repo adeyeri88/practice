@@ -1,6 +1,6 @@
 ---
 - name: Hello World!
-  hosts: {{ Enter }}
+  hosts: {{ hosts }}
   vars:
     actions: "{{ actions }}"
  
