@@ -1,6 +1,6 @@
 ---
 - name: playbook to patch linux hosts
-  hosts: all
+  hosts: "{{hosts_inventory}}"
   serial: 1
   become: yes
 #  remote_user: root
