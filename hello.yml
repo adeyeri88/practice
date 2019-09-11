@@ -1,6 +1,6 @@
 ---
 - name: Hello World!
-  hosts: "{{hosts_inventory}}"
+  hosts: "{{ hosts_inventory }}"
   vars:
     actions: "{{ actions }}"
  
