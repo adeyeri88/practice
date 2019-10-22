@@ -1,0 +1,32 @@
+---
+#playbook to manage selinux policy
+- hosts: "{{hosts_inventory}}"
+  become: yes
+  handlers:
+    - name: reboot server
+      reboot:
+        reboot_timeout: 1800
+      listen: "reboot server"
+  vars:
+    action: "{{selinux}}"
+  tasks:
+    - name: Enable selinux to enforcing mode
+      selinux:
+        policy: targeted
+        state: enforcing
+      when: selinux == 'enforcing'
+      notify:
+        - reboot server
+
+    - name: Put selinux in permissive mode
+      selinux:
+        policy: targeted
+        state: permissive
+      when: selinux == 'permissive'
+      notify:
+        - reboot server
+
+    - name: Disable selinux
+      selinux:
+        state: disabled
+      when: selinux == 'disabled'
