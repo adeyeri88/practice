@@ -1,0 +1,33 @@
+---
+#Playbook to manage parameters
+- hosts: "{{hosts_inventory}}"
+  become: yes
+  #user: root
+  vars:
+    action: "{{ulimit}}"
+  tasks:
+    - name: update vm swappiness value
+      sysctl:
+        #name: net.ipv4.ip_forward
+        name: "{{ parameter }}"
+        sysctl_set: yes
+        state: present
+        value: "{{ value }}"
+      tags: regular
+
+    - name: Set kernel.panic entry to 3 in /tmp/test_sysctl.conf
+      sysctl:
+        #name: kernel.panic
+        name: "{{ parameter }}"
+        value: "{{ value }}"
+        sysctl_file: /tmp/test_sysctl.conf
+        reload: no
+      tags: extra
+
+    - name: remove vm swappiness value
+      sysctl:
+        name: "{{ parameter }}"
+        sysctl_set: yes
+        state: absent
+        value: "{{ value }}"
+      tags: remove

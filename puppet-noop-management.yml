@@ -1,0 +1,17 @@
+---
+# Playbook to put puppet node in or out of noop mode
+- hosts: "{{ hosts_inventory }}"
+  become: yes
+  vars:
+    actions: "{{ actions }}"
+
+  tasks:
+    - name: put node in noop mode
+      puppet:
+        noop: yes
+      when: action == 'noop-in'
+
+    - name: remove node from noop mode
+      puppet:
+        noop: no
+      when: action == 'noop-out'

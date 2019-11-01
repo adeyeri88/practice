@@ -1,0 +1,42 @@
+---
+#Playbook to manage ulimite value
+- hosts: "{{hosts_inventory}}"
+  become: yes
+  vars:
+    method: "{{ actions }}"
+  tasks:
+    - block:
+        - name: create limits.d-directory if it does not exist | sysctl-31a, sysctl-31b
+          file:
+            name: /etc/security/limits.d
+            owner: root
+            group: root
+            mode: 0755
+            state: directory
+
+        - name: create additional limits config file -> 10.hardcore.conf | sysctl-31a, sysctl-31b
+          pam_limits:
+            #dest: '/etc/security/limits.d/10.hardcore.conf'
+            dest: "{{ path }}"
+            domain: '*'
+            limit_type: "{{ type }}"
+            limit_item: "{{ item }}"
+            value: "{{ value }}"
+            comment: "{{ argument }}"
+      rescue:
+        - name: set 10.hardcore.conf perms to 0644 and root ownership
+          file:
+            path: "{{ path }}"
+            #path: /etc/security/limits.d/10.hardcore.conf
+            owner: 'root'
+            group: 'root'
+            mode: '0644'
+      when: actions == 'deploy'
+
+    - block:
+        - name: remove 10.hardcore.conf config file
+          file:
+            #path: /etc/security/limits.d/10.hardcore.conf
+            path: "{{ path }}"
+            state: absent
+      when: actions == 'undeploy'
