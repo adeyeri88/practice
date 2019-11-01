@@ -1,0 +1,31 @@
+---
+#playbook to manage sftp service
+- hosts: "{{hosts_inventory}}"
+  become: yes
+  vars:
+    method: "{{sftp}}"
+  tasks:
+    - name: start sftp service
+      service:
+        name: "{{ service_name }}"
+        state: started
+        enabled: true
+      when: sftp == 'start'
+
+    - name: restart sftp service
+      service:
+        name: "{{ service_name }}"
+        state: restarted
+      when: sftp == 'restart'
+
+    - name: stop sftp service
+      service:
+        name: "{{ service_name }}"
+        state: stopped
+      when: sftp == 'stop'
+
+    - name: reload sftp service
+      service:
+        name: "{{ service_name }}"
+        state: reloaded
+      when: sftp == 'reload'
