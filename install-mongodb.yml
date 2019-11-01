@@ -1,0 +1,33 @@
+---
+- name: playbook to install Mongodb
+- hosts: all
+  become: yes
+  handlers:
+  - name: yum-clean-metadata
+    command: yum clean metadata
+    listen: "clean repo"
+
+  tasks:
+    - name: configure mongodb repos
+      yum_repository:
+        name: mongodb
+        description: MongoDB YUM repo
+        baseurl: https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/
+        gpgcheck: yes
+        gpgkey: https://www.mongodb.org/static/pgp/server-4.0.asc
+        enabled: yes
+      notify:
+        - clean repo
+      register: result
+
+    - name: install mongodb package
+      yum:
+        name: mongodb-org
+        state: latest
+      when: result is succeeded
+
+    - name: start mongodb service
+      service:
+        name: mongod
+        state: started
+

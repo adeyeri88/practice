@@ -1,0 +1,3 @@
+---
+####Playbook to install couchbase cluster########
+hosts: couch
