@@ -1,0 +1,14 @@
+---
+#playbook to manage my service
+- hosts: "{{hosts_inventory}}"
+  become: yes
+  vars:
+    method: "{{ sftp }}"
+    service: "{{ service_name }}"
+  tasks: 
+    - include_tasks: service-management.yml
+    with_items:
+      - "{{ service }}"
+    loop_control:
+      loop_vars: service
+	  
