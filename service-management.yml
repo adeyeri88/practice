@@ -1,9 +1,9 @@
 ---
 #playbook to manage sftp service
-- hosts: "{{hosts_inventory}}"
+- hosts: "{{ hosts_inventory }}"
   become: yes
   vars:
-    method: "{{sftp}}"
+    method: "{{ sftp }}"
   tasks:
     - name: start sftp service
       service:
