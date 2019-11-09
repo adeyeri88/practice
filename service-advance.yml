@@ -1,7 +1,7 @@
 ---
 #playbook to manage my service
-#- hosts: "{{hosts_inventory}}"
-#  become: yes
+- hosts: "{{hosts_inventory}}"
+  become: yes
 - name: playbook for looping over service
   vars:
     service: "{{ service_name }}"
