@@ -1,9 +1,9 @@
 ---
 #playbook to manage my service
-- hosts: "{{hosts_inventory}}"
-  become: yes
+#- hosts: "{{hosts_inventory}}"
+#  become: yes
   vars:
-    method: "{{ sftp }}"
+#    method: "{{ sftp }}"
     service: "{{ service_name }}"
   tasks: 
     - name: looping over service
