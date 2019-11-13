@@ -1,0 +1,37 @@
+---
+####Playbook to create user and assigne password ############################################################
+- hosts: "{{ ansible_hosts }}"
+  become: yes
+  vars:
+    name: user_name
+
+  vars_prompt:
+    name: "encrypted_user_password"
+    prompt: "Enter New Password"
+    private: yes
+    encrypt: "md5_crypt"
+    confirm: yes
+    salt_size: 7
+
+  tasks:
+    - name: get user information
+      getent:
+        database: passwd
+        key: "{{ user_name }}"
+        fail_key: false
+#    - name: check users
+#      shell: getent passwd user_name | awk -F":" '{print $1}'
+#      register: output
+
+    - debug:
+        var: getent_passwd
+
+    - name: create user if does't exist
+      user:
+        name: "{{ user_name }}"
+        state: present
+        shell: /bin/bash
+        home: /home/{{ user_name }}
+        password: "{{ encrypted_user_password }}"
+        update_password: always
+      when: getent_passwd[user_name] == none
