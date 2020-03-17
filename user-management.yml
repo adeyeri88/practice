@@ -1,6 +1,6 @@
 ---
 ####Playbook to create user and assigne password ############################################################
-- hosts: "{{ ansible_hosts }}"
+- hosts: "{{ hosts_inventory }}"
   become: yes
   vars:
     name: user_name
