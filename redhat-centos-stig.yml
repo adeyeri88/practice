@@ -1,0 +1,7 @@
+---
+- hosts: localhost
+  connection: local
+  become: true
+  roles:
+#    - /home/bastion/playbook/practice/roles/ansible-role-rhel7-stig
+    - ../roles/redhatofficial.rhel7_stig 
