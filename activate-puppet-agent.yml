@@ -1,0 +1,74 @@
+##########This playbook will activate puppet agent on Linux systems     #############
+#####This Playbook is developed by Abdoul Alarou: Devops Engineer
+#Version 1.2
+---
+- hosts: "{{ hosts_inventory }}"
+  become: yes
+  serial: 1
+  gather_facts: True
+  
+  tasks:
+    - name: enable puppet agent repository on redhat 6 or centos 6
+      yum_repository:
+        name: Puppet6
+        description: "Puppet 6 Repository el 6 - $basearch"
+        baseurl: http://yum.puppetlabs.com/puppet6/el/6/$basearch
+        gpgcheck: yes
+        gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppet6-release
+        enabled: yes
+      when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] == "6") or
+            (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "6")
+
+    - name: enable puppet agent repository on redhat 7 or centos 7
+      yum_repository:
+        name: Puppet6
+        description: "Puppet 6 Repository el 7 - $basearch"
+        baseurl: http://yum.puppetlabs.com/puppet6/el/7/$basearch
+        gpgcheck: yes
+        gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppet6-release
+        enabled: yes
+      when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] == "7") or
+            (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "7")
+
+    - name: enable puppet agent repository on redhat 8 or centos 8
+      yum_repository:
+        name: Puppet6
+        description: "Puppet 6 Repository el 8 - $basearch"
+        baseurl: http://yum.puppetlabs.com/puppet6/el/8/$basearch
+        gpgcheck: yes
+        gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppet6-release
+        enabled: yes
+      when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] == "8") or
+            (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")
+
+    - name: update /etc/hosts
+      lineinfile:
+        path: /etc/hosts
+        line: "192.168.1.106   foreman.adeolagroup.com puppet"
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Install puppet agent
+      package:
+        name: puppet-agent
+        state: present
+
+    - name: Start and Enable puppet agent
+      service:
+        name: puppet
+        state: started
+        enabled: yes
+
+    - name: update the puppet path in sudoers file
+      template:
+        src: templates/extra.j2
+        dest: /etc/sudoers.d/extra
+        owner: root
+        group: root
+        mode: '0644'
+        validate: /usr/sbin/visudo -cf %s
+        backup: yes
+
+    - name: Generate puppet certificate
+      shell: "puppet agent --fingerprint"
