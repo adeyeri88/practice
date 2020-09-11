@@ -1,32 +1,44 @@
+##This playbook will patching redhat and centos systems
 ---
 - name: playbook to patch linux hosts
   hosts: "{{hosts_inventory}}"
-  serial: 1
+  serial: 5
   become: yes
-#  remote_user: root
 
+# this task will clean all yum cache on a system
   tasks:
     - name: clean up the repos
       shell: yum clean all
       args:
         warn: no
 
+# this task will will reload all repos
     - name: repolist the repos
       shell: yum repolist all
-#      warn: False
+      args:
+        warn: False
 
+# this task will upgrade/install the rpm’s if application is stopped
     - name: update the package
       yum:
         name: '*'
         state: latest
-        exclude: kernel*
 
+# this task is to check if kernel update happend and system needs reboot or not
+    - name: check if reboot required after kernel update.
+      shell: KERNEL_NEW=$(rpm -q –last kernel |head -1 | awk '{print $1}' | sed 's/kernel-//'); KERNEL_NOW=$(uname -r); if [[ $KERNEL_NEW != $KERNEL_NOW ]]; then echo "reboot_needed"; else echo "reboot_not_needed"; fi
+      ignore_errors: true
+      register: reboot_required
+
+# this task is to restart the system
     - name: reboot the server
-      shell: "sleep 5 && shutdown -r now"
+      shell: sleep 5 && shutdown -r now "Reboot is required after the systems patching."
       ignore_errors: true
       changed_when: false
       async: 1
       poll: 0
+      when: reboot_required.stdout == "reboot_needed"
+
 
     - name: Wait for server to become available
       wait_for_connection:
