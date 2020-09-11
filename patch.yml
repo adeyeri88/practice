@@ -1,4 +1,5 @@
 ##This playbook will patching redhat and centos systems
+#Version 2.0
 ---
 - name: playbook to patch linux hosts
   hosts: "{{hosts_inventory}}"
