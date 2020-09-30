@@ -88,17 +88,18 @@
       when: ansible_os_family == "RedHat" and reboot_default | bool and yum_reboot_hint_result.stdout.find("reboot") != -1
 
     - name: Reboot Server if Necessary
-      command: /sbin/shutdown -r now "Ansible Updates Triggered"
-      async: 30
-      poll: 0
+      reboot:
+        pre_reboot_delay: 0
+        post_reboot_delay: 10
+        reboot_timeout: 600
       when: reboot_default | bool and reboot_hint_result | bool
     #  when: reboot_hint.stdout.find("reboot") != -1
     #  when: result.rc == 1
 
     # This pause is mandatory, otherwise the existing control connection
-    - name: Pausing to allow server to shutdown and terminate our SSH connection
-      pause: seconds=30
-      when: reboot_default | bool and reboot_hint_result | bool
+    #- name: Pausing to allow server to shutdown and terminate our SSH connection
+    #  pause: seconds=30
+    #  when: reboot_default | bool and reboot_hint_result | bool
   #    when: result.rc == 1
 
     - name: Wait for reboot to complete and SSH to become available
