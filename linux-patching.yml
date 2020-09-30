@@ -1,7 +1,5 @@
 ---
-
 ##playbook to Patch Linux redhat 6, 7, 8, and Centos 6, 7, 8.
-
 ##Make sure you incomment all lines under vars and under tasks if patching redhat systems
 - name: Patch and reboot servers
   hosts: "{{ hosts_inventory }}"
@@ -18,13 +16,11 @@
 #    dnf_disablerepo: "*"
     dnf_exclude: ""
   tasks:
-
 # this task will clean all yum cache on a system
     - name: clean up the repos
       shell: yum clean all
       args:
         warn: no
-
 # this task will will reload all repos
     - name: repolist the repos
       shell: yum repolist all
