@@ -34,7 +34,6 @@
 #        disablerepo={{ yum_disablerepo }}
 #        enablerepo={{ yum_enablerepo }}
         exclude="{{ yum_exclude }}"
-      become: "yes"
       register: yumcommandout
       when:
         - (ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution_major_version'] == "6") or
@@ -52,7 +51,6 @@
 #        disablerepo={{ dnf_disablerepo }}
 #        enablerepo={{ dnf_enablerepo }}
         exclude="{{ dnf_exclude }}"
-      become: "yes"
       register: dnfcommandout
       when:
         - (ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")
