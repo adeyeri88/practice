@@ -75,9 +75,9 @@
       ignore_errors: true
       register: reboot_hint
 
-    - name: display result
+    - name: display output of reboot_hint
       debug:
-        var: reboot_hint
+        var: {{ reboot_hint }}
     #    var: result.rc
 
     - name: Reboot Server if Necessary
@@ -85,13 +85,14 @@
       become: true
       async: 30
       poll: 0
-      when: reboot_hint.stdout.find("reboot") != -1
+      when: reboot_hint.stdout.find == "reboot"
+    #  when: reboot_hint.stdout.find("reboot") != -1
     #  when: result.rc == 1
 
     # This pause is mandatory, otherwise the existing control connection
     - name: Pausing to allow server to shutdown and terminate our SSH connection
       pause: seconds=30
-      when: reboot_hint.stdout.find("reboot") != -1
+      when: reboot_hint.stdout.find == "reboot"
   #    when: result.rc == 1
 
     - name: Wait for reboot to complete and SSH to become available
@@ -99,5 +100,6 @@
         state=started delay=30 timeout=600
       retries: 30
       delay: 10
-      when: reboot_hint.stdout.find("reboot") != -1
+      when: reboot_hint.stdout.find == "reboot"
+  #    when: reboot_hint.stdout.find("reboot") != -1
   #    when: result.rc == 1
