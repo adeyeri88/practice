@@ -36,6 +36,8 @@
 #        enablerepo={{ yum_enablerepo }}
 #        exclude="{{ yum_exclude }}"
       register: yumcommandout
+      retries: 3
+      delay: 30
       when:
         - (ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution_major_version'] == "6") or
           (ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution_major_version'] == "7")
@@ -53,6 +55,8 @@
 #        enablerepo={{ dnf_enablerepo }}
 #        exclude="{{ dnf_exclude }}"
       register: dnfcommandout
+      retries: 3
+      delay: 30
       when:
         - (ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")
 
