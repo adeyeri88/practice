@@ -15,6 +15,7 @@
 #    dnf_enablerepo: "rhel-8-for-x86_64-appstream-rpms,rhel-8-for-x86_64-baseos-rpms,satellite-tools-6.?-for-rhel-8-x86_64-rpms"
 #    dnf_disablerepo: "*"
     dnf_exclude: ""
+    reboot_default: true
   tasks:
 # this task will clean all yum cache on a system
     - name: clean up the repos
