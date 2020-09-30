@@ -5,6 +5,7 @@
 ##Make sure you incomment all lines under vars and under tasks if patching redhat systems
 - name: Patch and reboot servers
   hosts: "{{ hosts_inventory }}"
+  become: yes
   vars:
     yum_name: "*"
     yum_state:  latest
@@ -72,27 +73,32 @@
 
     - name: Check for reboot hint.
       shell: LAST_KERNEL=$(rpm -q --last kernel | awk 'NR==1{sub(/kernel-/,""); print $1}'); CURRENT_KERNEL=$(uname -r); if [ $LAST_KERNEL != $CURRENT_KERNEL ]; then echo 'reboot'; else echo 'no'; fi
-      ignore_errors: true
-      register: reboot_hint
+      changed_when: false
+      register: yum_reboot_hint_result
+      when: ansible_os_family == "RedHat"
 
-    - name: display output of reboot_hint
-      debug:
-        var: {{ reboot_hint }}
-    #    var: result.rc
+    - name: set the fact for reboot
+      set_fact:
+        reboot_hint_result: false
+      when: ansible_os_family == "RedHat" and reboot_default | bool and yum_reboot_hint_result.stdout.find("no") != -1
+
+    - name: set the fact for reboot
+      set_fact:
+        reboot_hint_result: true
+      when: ansible_os_family == "RedHat" and reboot_default | bool and yum_reboot_hint_result.stdout.find("reboot") != -1
 
     - name: Reboot Server if Necessary
       command: /sbin/shutdown -r now "Ansible Updates Triggered"
-      become: true
       async: 30
       poll: 0
-      when: reboot_hint.stdout.find == "reboot"
+      when: reboot_default | bool and reboot_hint_result | bool
     #  when: reboot_hint.stdout.find("reboot") != -1
     #  when: result.rc == 1
 
     # This pause is mandatory, otherwise the existing control connection
     - name: Pausing to allow server to shutdown and terminate our SSH connection
       pause: seconds=30
-      when: reboot_hint.stdout.find == "reboot"
+      when: reboot_default | bool and reboot_hint_result | bool
   #    when: result.rc == 1
 
     - name: Wait for reboot to complete and SSH to become available
@@ -100,6 +106,6 @@
         state=started delay=30 timeout=600
       retries: 30
       delay: 10
-      when: reboot_hint.stdout.find == "reboot"
+      when: reboot_default | bool and reboot_hint_result | bool
   #    when: reboot_hint.stdout.find("reboot") != -1
   #    when: result.rc == 1
