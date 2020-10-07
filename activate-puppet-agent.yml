@@ -6,16 +6,16 @@
   become: yes
   serial: 1
   gather_facts: True
-  
+
   tasks:
     - name: enable puppet agent repository on redhat 6 or centos 6
       yum_repository:
         name: Puppet6
         description: "Puppet 6 Repository el 6 - $basearch"
         baseurl: http://yum.puppetlabs.com/puppet6/el/6/$basearch
-        gpgcheck: yes
+        gpgcheck: no
         gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppet6-release
-        enabled: no
+        enabled: yes
       when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] == "6") or
             (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "6")
 
