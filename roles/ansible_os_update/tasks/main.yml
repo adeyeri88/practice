@@ -118,7 +118,7 @@
     environment: "{{ proxy_env }}"
     register: stat_yum_upgrade_results
     until: "stat_yum_upgrade_results is success"
-    retries: 2
+    retries: 10
     delay: 30
     tags:
       - skip_ansible_lint
