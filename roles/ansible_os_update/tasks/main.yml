@@ -114,7 +114,8 @@
       name: "{{ server_update_yum_install_pkgs | default('*') }}"
       state: latest # noqa 10
       update_cache: yes
-      exclude: "{{ server_update_yum_exclude_pkgs | default([]) }}"
+      exclude: "{{ server_update_yum_exclude_pkgs }}"
+#      exclude: "{{ server_update_yum_exclude_pkgs | default([]) }}"
 #    environment: "{{ proxy_env }}"
     register: stat_yum_upgrade_results
     until: "stat_yum_upgrade_results is success"
