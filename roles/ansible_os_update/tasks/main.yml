@@ -27,6 +27,18 @@
   pause:
     seconds: "{{ server_update_reboot_pre_delay }}"
 
+- name: Check all current installed packages on RedHat and append results to /opt/update.txt
+  shell: "yum list installed > /opt/update-"`date +"%d-%m-%Y"`""
+  args:
+    warn: no
+  when: ansible_os_family == "RedHat"
+
+- name: Check all current installed packages on Ubuntu and append results to /opt/update
+  shell: "apt list --installed > /opt/update-"`date +"%d-%m-%Y"`""
+  args:
+    warn: no
+  when: ansible_os_family == "Debian" or ansible_distribution == "Ubuntu"
+
 #Exclude updating package(s), hack using apt-mark to temp hold before and unhold after update
 #Not using dpkg_selections module since it can't use wildcard.
 - name: server update reboot | apt - exclude a package from updating (hold)
