@@ -23,7 +23,7 @@ server_update_yum_install_pkgs: '*'
 #For Ubuntu: List of packages to not update (each on separate line).
 #Can include wildcard (but use ^ to begin match or a lot will match) to match multiple packages.
 #server_update_apt_exclude_default: false
-#server_update_apt_exclude_default: true
+server_update_apt_exclude_default: true
 server_update_apt_exclude_pkgs:
 #  - ^mysql*
 #  - bash
