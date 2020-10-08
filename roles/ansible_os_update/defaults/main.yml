@@ -9,7 +9,7 @@ server_update_reboot_reboot_timeout: 600
 #
 #For Redhat/CentOS: List of packages to not update (comma separated).
 #Can include wildcard to match multiple packages.
-server_update_yum_exclude_pkgs:
+#server_update_yum_exclude_pkgs:
 #server_update_yum_exclude_pkgs: "mysql*, bash, openssh*"
 #server_update_yum_exclude_pkgs: []
 #
