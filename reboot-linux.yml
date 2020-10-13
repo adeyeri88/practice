@@ -18,7 +18,7 @@
    - name: wait for reboot to complete and SSH to become available 
      wait_for_connection:
        timeout: 600
-       dalay: 60
+       delay: 60
     # when: reboot_default | bool and reboot_hint_result | bool
 
    - name: Check the uptime post reboot
