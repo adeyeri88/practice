@@ -19,7 +19,7 @@
      wait_for_connection:
        timeout: 600
        dalay: 60
-     when: reboot_default | bool and reboot_hint_result | bool
+    # when: reboot_default | bool and reboot_hint_result | bool
 
    - name: Check the uptime post reboot
      shell: uptime
